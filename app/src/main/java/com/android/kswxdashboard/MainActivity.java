@@ -140,19 +140,19 @@ public class MainActivity extends AppCompatActivity {
                             ImageView imgRpmneedle = (ImageView)findViewById(R.id.imgRpmneedle);
 
                             if (rpmvalue<1001) {
-                                imgRpmneedle.setRotation((float) (70 - ((rpmvalue/1000) * 20)));
+                                imgRpmneedle.setRotation((float) (70 - ((rpmvalue/1000.0) * 20)));
                             } else if (rpmvalue>1000 & rpmvalue<2001) {
-                                imgRpmneedle.setRotation((float) (50 - (((rpmvalue/1000)-1) * 30)));
+                                imgRpmneedle.setRotation((float) (50 - (((rpmvalue/1000.0)-1) * 30)));
                             } else if (rpmvalue>2000 & rpmvalue<3001) {
-                                imgRpmneedle.setRotation((float) (20 - ((rpmvalue/1000)-2 * 23)));
+                                imgRpmneedle.setRotation((float) (20 - (((rpmvalue/1000.0)-2) * 23)));
                             } else if (rpmvalue>3000 & rpmvalue<4001) {
-                                imgRpmneedle.setRotation((float) (3 + ((rpmvalue/1000)-3 * 27)));
+                                imgRpmneedle.setRotation((float) (-3 - (((rpmvalue/1000.0)-3) * 27)));
                             } else if (rpmvalue>4000 & rpmvalue<5001) {
-                                imgRpmneedle.setRotation((float) (30 + ((rpmvalue/1000)-4 * 35)));
+                                imgRpmneedle.setRotation((float) (-30 - (((rpmvalue/1000.0)-4) * 35)));
                             } else if (rpmvalue>5000 & rpmvalue<6001) {
-                                imgRpmneedle.setRotation((float) (65 + ((rpmvalue/1000)-5 * 35)));
+                                imgRpmneedle.setRotation((float) (-60 - (((rpmvalue/1000.0)-5) * 35)));
                             } else if (rpmvalue>6000 & rpmvalue<7001) {
-                                imgRpmneedle.setRotation((float) (100 + ((rpmvalue/1000)-6 * 30)));
+                                imgRpmneedle.setRotation((float) (-100 - (((rpmvalue/1000.0)-6) * 30)));
                             }
 
 
@@ -242,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void testlog(View view) {
-        Log.i("IPowerManagerAppService", "sendStatus Msg: {\"jsonArg\":\"{\\\"acData\\\":{\\\"AC_Switch\\\":false,\\\"autoSwitch\\\":false,\\\"backMistSwitch\\\":false,\\\"frontMistSwitch\\\":false,\\\"isOpen\\\":false,\\\"leftTmp\\\":0.0,\\\"loop\\\":0,\\\"mode\\\":0,\\\"rightTmp\\\":0.0,\\\"speed\\\":0.0,\\\"sync\\\":false},\\\"benzData\\\":{\\\"airBagSystem\\\":false,\\\"airMaticStatus\\\":0,\\\"auxiliaryRadar\\\":false,\\\"highChassisSwitch\\\":false,\\\"light1\\\":0,\\\"light2\\\":0,\\\"pressButton\\\":0},\\\"carData\\\":{\\\"airTemperature\\\":22.0,\\\"averSpeed\\\":0.0,\\\"carDoor\\\":192,\\\"distanceUnitType\\\":0,\\\"engineTurnS\\\":643,\\\"handbrake\\\":false,\\\"mileage\\\":309,\\\"oilSum\\\":27,\\\"oilUnitType\\\":0,\\\"oilWear\\\":0.0,\\\"safetyBelt\\\":true,\\\"speed\\\":65,\\\"temperatureUnitType\\\":0},\\\"mcuVerison\\\":\\\"615065dALS-ID5-X1-GT-190508-B18\\\\u0000\\\\u0000\\\\u0000\\\\u0000\\\\u0000\\\\u0000\\\\u0000\\\\u0000\\\\u0000\\\",\\\"systemMode\\\":1}\",\"type\":5}");
+        Log.i("IPowerManagerAppService", "sendStatus Msg: {\"jsonArg\":\"{\\\"acData\\\":{\\\"AC_Switch\\\":false,\\\"autoSwitch\\\":false,\\\"backMistSwitch\\\":false,\\\"frontMistSwitch\\\":false,\\\"isOpen\\\":false,\\\"leftTmp\\\":0.0,\\\"loop\\\":0,\\\"mode\\\":0,\\\"rightTmp\\\":0.0,\\\"speed\\\":0.0,\\\"sync\\\":false},\\\"benzData\\\":{\\\"airBagSystem\\\":false,\\\"airMaticStatus\\\":0,\\\"auxiliaryRadar\\\":false,\\\"highChassisSwitch\\\":false,\\\"light1\\\":0,\\\"light2\\\":0,\\\"pressButton\\\":0},\\\"carData\\\":{\\\"airTemperature\\\":22.0,\\\"averSpeed\\\":0.0,\\\"carDoor\\\":192,\\\"distanceUnitType\\\":0,\\\"engineTurnS\\\":7000,\\\"handbrake\\\":false,\\\"mileage\\\":309,\\\"oilSum\\\":27,\\\"oilUnitType\\\":0,\\\"oilWear\\\":0.0,\\\"safetyBelt\\\":true,\\\"speed\\\":150,\\\"temperatureUnitType\\\":0},\\\"mcuVerison\\\":\\\"615065dALS-ID5-X1-GT-190508-B18\\\\u0000\\\\u0000\\\\u0000\\\\u0000\\\\u0000\\\\u0000\\\\u0000\\\\u0000\\\\u0000\\\",\\\"systemMode\\\":1}\",\"type\":5}");
     }
 
 }
