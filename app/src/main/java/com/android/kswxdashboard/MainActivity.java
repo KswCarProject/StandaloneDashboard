@@ -3,16 +3,12 @@ package com.android.kswxdashboard;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Timer;
@@ -61,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        TextView textlog = (TextView)findViewById(R.id.textlog);
                         String line = logEntry;
 
                         if (line.contains("IPowerManagerAppService") & line.contains("acData")) {
@@ -193,10 +188,6 @@ public class MainActivity extends AppCompatActivity {
                             }else{
                                 imgSeatbelt.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.seatbeltonok));
                             }
-
-                            textlog.setText(line);
-
-
 
                         }
 

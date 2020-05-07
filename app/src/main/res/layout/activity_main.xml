@@ -143,14 +143,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textlog"
-        android:layout_width="738dp"
-        android:layout_height="138dp"
-        android:text="textlog"
-        android:textColor="#FFFFFF"
-        android:textSize="12sp"
-        tools:layout_editor_absoluteX="2dp"
-        tools:layout_editor_absoluteY="3dp" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
