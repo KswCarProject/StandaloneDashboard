@@ -3,11 +3,16 @@ package com.android.kswxdashboard;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Process;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -16,6 +21,7 @@ import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 
+    final public String reqPermission = "android.permission.READ_LOGS";
     Calendar c;
     SimpleDateFormat simpleTimeFormat;
     private LogcatRecorder logcatRecorder;
@@ -24,6 +30,25 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (!checkPermission()){
+            try {
+                PmAdbManager.tryGrantingPermissionOverAdb(getFilesDir(), reqPermission);
+            } catch (Exception e) {
+                AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
+                dlgAlert.setMessage("Failed to get permissions!" + e.getClass().getName() + " \n " + e.getMessage() + "\n You will have to manually grant READ_LOGS permission to this app!");
+                dlgAlert.setTitle("Dashboard");
+                dlgAlert.setPositiveButton("OK", null);
+                dlgAlert.setCancelable(true);
+                dlgAlert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                    }
+                });
+                dlgAlert.create().show();
+            }
+        }
 
         hideSystemUI();
 
@@ -229,6 +254,10 @@ public class MainActivity extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+    }
+
+    private boolean checkPermission() {
+        return this.checkPermission(reqPermission, Process.myPid(), Process.myUid()) == PackageManager.PERMISSION_GRANTED;
     }
 
 
