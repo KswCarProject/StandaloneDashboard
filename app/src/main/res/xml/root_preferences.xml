@@ -1,0 +1,32 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory>
+
+        <SwitchPreferenceCompat
+            app:key="speed_imp"
+            app:title="Speed in mph"
+            app:summary="Shows speed in miles per hour"/>
+
+        <SwitchPreferenceCompat
+            app:key="milage_imp"
+            app:title="Milage in miles"
+            app:summary="Shows estimated left milage in miles"/>
+
+        <SwitchPreferenceCompat
+            app:key="gas_imp"
+            app:title="Gas in gallons"
+            app:summary="Shows remaining gas in US Gallons"/>
+
+        <SwitchPreferenceCompat
+            app:key="temp_imp"
+            app:title="Temperature in Fahrenheit"
+            app:summary="Shows temperature in Fahrenheit"/>
+
+        <SwitchPreferenceCompat
+            app:key="clock_imp"
+            app:title="12 hour clock"
+            app:summary="Shows the digital clock in 12 hours format"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

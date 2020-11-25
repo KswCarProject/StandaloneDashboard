@@ -2,10 +2,26 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dashboardRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bgok"
+    android:background="@drawable/bmw_live_cockpit"
+    android:animateLayoutChanges="true"
     tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/txtSpeedUnit"
+        android:layout_width="67dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="240dp"
+        android:fontFamily="@font/bmwfont"
+        android:text="km/h"
+        android:textAlignment="textStart"
+        android:textColor="#d9d9d9d9"
+        android:textSize="25sp"
+        app:layout_constraintStart_toEndOf="@+id/txtSpeed"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/txtSpeed"
@@ -22,18 +38,146 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/txtTime"
-        android:layout_width="110dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="272dp"
-        android:layout_marginTop="426dp"
+        android:id="@+id/IndiSpeed8"
+        android:layout_width="65dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="448dp"
+        android:layout_marginTop="28dp"
         android:fontFamily="@font/bmwfont"
-        android:text="00:00"
-        android:textAlignment="textEnd"
+        android:text="260"
+        android:textAlignment="textStart"
         android:textColor="@android:color/background_light"
-        android:textSize="36sp"
+        android:textSize="35sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/IndiSpeed7"
+        android:layout_width="65dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="328dp"
+        android:layout_marginTop="40dp"
+        android:fontFamily="@font/bmwfont"
+        android:text="200"
+        android:textAlignment="textStart"
+        android:textColor="@android:color/background_light"
+        android:textSize="35sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/IndiSpeed6"
+        android:layout_width="65dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="220dp"
+        android:layout_marginTop="64dp"
+        android:fontFamily="@font/bmwfont"
+        android:text="140"
+        android:textAlignment="textStart"
+        android:textColor="@android:color/background_light"
+        android:textSize="35sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/IndiSpeed5"
+        android:layout_width="65dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="136dp"
+        android:layout_marginTop="120dp"
+        android:fontFamily="@font/bmwfont"
+        android:text="100"
+        android:textAlignment="textStart"
+        android:textColor="@android:color/background_light"
+        android:textSize="35sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/IndiSpeed4"
+        android:layout_width="65dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="76dp"
+        android:layout_marginTop="204dp"
+        android:fontFamily="@font/bmwfont"
+        android:text="60"
+        android:textAlignment="textStart"
+        android:textColor="@android:color/background_light"
+        android:textSize="35sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/IndiSpeed3"
+        android:layout_width="65dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="112dp"
+        android:layout_marginTop="288dp"
+        android:fontFamily="@font/bmwfont"
+        android:text="40"
+        android:textAlignment="textStart"
+        android:textColor="@android:color/background_light"
+        android:textSize="35sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/IndiSpeed2"
+        android:layout_width="65dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="164dp"
+        android:layout_marginTop="360dp"
+        android:fontFamily="@font/bmwfont"
+        android:text="20"
+        android:textAlignment="textStart"
+        android:textColor="@android:color/background_light"
+        android:textSize="35sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/IndiSpeed1"
+        android:layout_width="65dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="248dp"
+        android:layout_marginTop="372dp"
+        android:fontFamily="@font/bmwfont"
+        android:text="0"
+        android:textAlignment="textStart"
+        android:textColor="@android:color/background_light"
+        android:textSize="35sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtSpeedUnitT"
+        android:layout_width="67dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="284dp"
+        android:layout_marginTop="380dp"
+        android:fontFamily="@font/bmwfont"
+        android:text="km/h"
+        android:textAlignment="textStart"
+        android:textColor="#d9d9d9d9"
+        android:textSize="25sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="252dp"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/bmwfont"
+        android:text="00:00"
+        android:textAlignment="textStart"
+        android:textColor="@android:color/background_light"
+        android:textSize="36sp"
+        app:layout_constraintEnd_toStartOf="@+id/imgSeatbelt"
+        app:layout_constraintHorizontal_bias="0.657"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtSpeedUnitT" />
 
     <TextView
         android:id="@+id/txtGas"
@@ -50,17 +194,46 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/txtGasUnit"
+        android:layout_width="67dp"
+        android:layout_height="35dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="406dp"
+        android:fontFamily="@font/bmwfont"
+        android:text="l"
+        android:textAlignment="textStart"
+        android:textColor="#d9d9d9d9"
+        android:textSize="25sp"
+        app:layout_constraintStart_toEndOf="@+id/txtGas"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
         android:id="@+id/txtMileage"
-        android:layout_width="38dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="635dp"
-        android:layout_marginTop="434dp"
+        android:layout_marginTop="436dp"
         android:fontFamily="@font/bmwfont"
         android:text="0"
         android:textAlignment="textEnd"
         android:textColor="@android:color/background_light"
         android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="@+id/txtGas"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtMilageUnit"
+        android:layout_width="67dp"
+        android:layout_height="35dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="434dp"
+        android:fontFamily="@font/bmwfont"
+        android:text="km"
+        android:textAlignment="textStart"
+        android:textColor="#d9d9d9d9"
+        android:textSize="25sp"
+        app:layout_constraintStart_toEndOf="@+id/txtMileage"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -75,6 +248,20 @@
         android:textColor="@android:color/background_light"
         android:textSize="36sp"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtTemperatureUnit"
+        android:layout_width="67dp"
+        android:layout_height="35dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="431dp"
+        android:fontFamily="@font/bmwfont"
+        android:text="°C"
+        android:textAlignment="textStart"
+        android:textColor="#d9d9d9d9"
+        android:textSize="30sp"
+        app:layout_constraintStart_toEndOf="@+id/txtTemperature"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -142,5 +329,16 @@
         android:background="@drawable/handbreakonok"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <FrameLayout
+        android:id="@+id/settingsFragFrame"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

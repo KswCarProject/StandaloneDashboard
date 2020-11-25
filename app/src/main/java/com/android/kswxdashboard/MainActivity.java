@@ -3,16 +3,36 @@ package com.android.kswxdashboard;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.animation.ObjectAnimator;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Process;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.android.kswxdashboard.Converter.GasConverter;
+import com.android.kswxdashboard.Converter.Imperial.GasConverterImperial;
+import com.android.kswxdashboard.Converter.Imperial.MileageConverterImperial;
+import com.android.kswxdashboard.Converter.Imperial.SpeedConverterImperial;
+import com.android.kswxdashboard.Converter.Imperial.TemperatureConverterImperial;
+import com.android.kswxdashboard.Converter.Imperial.TimeConverter12;
+import com.android.kswxdashboard.Converter.Metric.GasConverterMetric;
+import com.android.kswxdashboard.Converter.Metric.MileageConverterMetric;
+import com.android.kswxdashboard.Converter.Metric.SpeedConverterMetric;
+import com.android.kswxdashboard.Converter.Metric.TemperatureConverterMetric;
+import com.android.kswxdashboard.Converter.Metric.TimeConverter24;
+import com.android.kswxdashboard.Converter.MilageConverter;
+import com.android.kswxdashboard.Converter.SpeedConverter;
+import com.android.kswxdashboard.Converter.TemperatureConverter;
+import com.android.kswxdashboard.Converter.TimeConverter;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -25,6 +45,14 @@ public class MainActivity extends AppCompatActivity {
     Calendar c;
     SimpleDateFormat simpleTimeFormat;
     private LogcatRecorder logcatRecorder;
+
+    final SettingsFragment settingsFragment = new SettingsFragment();
+    SharedPreferences preferences;
+    GasConverter gasConverter;
+    MilageConverter milageConverter;
+    SpeedConverter speedConverter;
+    TemperatureConverter temperatureConverter;
+    TimeConverter timeConverter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,16 +71,43 @@ public class MainActivity extends AppCompatActivity {
                 dlgAlert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        finish();
+                        //finish();
                     }
                 });
                 dlgAlert.create().show();
             }
         }
 
+        findViewById(R.id.dashboardRoot).setOnClickListener(new View.OnClickListener() {
+            boolean isShown = false;
+            @Override
+            public void onClick(View v) {
+                if (!isShown) {
+                    getSupportFragmentManager().beginTransaction()
+                            .setCustomAnimations(R.anim.slide_enter_right_left, R.anim.slide_exit_right_left)
+                            .replace(R.id.settingsFragFrame, settingsFragment)
+                            .commit();
+                    ObjectAnimator.ofInt(findViewById(R.id.dashboardRoot).getBackground(), "alpha", 50).setDuration(250).start();
+                    ObjectAnimator.ofFloat(findViewById(R.id.txtRpm), "alpha", 0.20f).setDuration(250).start();
+                    isShown = true;
+                }
+                else {
+                    getSupportFragmentManager().beginTransaction()
+                            .setCustomAnimations(R.anim.slide_enter_right_left, R.anim.slide_exit_right_left)
+                            .remove(settingsFragment)
+                            .commit();
+                    settingsFragment.getView().setBackgroundColor(Color.TRANSPARENT);
+                    ObjectAnimator.ofFloat(findViewById(R.id.txtRpm), "alpha", 1f).setDuration(250).start();
+                    ObjectAnimator.ofInt(findViewById(R.id.dashboardRoot).getBackground(), "alpha", 255).setDuration(250).start();
+                    isShown= false;
+                }
+            }
+        });
+
         hideSystemUI();
 
-        simpleTimeFormat = new SimpleDateFormat("HH:mm");
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        initUnits(preferences);
 
         Timer timer = new Timer();
 
@@ -177,16 +232,16 @@ public class MainActivity extends AppCompatActivity {
 
 
                             TextView txtTemperature = (TextView)findViewById(R.id.txtTemperature);
-                            txtTemperature.setText(temperature);
+                            txtTemperature.setText(temperatureConverter.getTemperature(temperature));
 
                             TextView txtMileage = (TextView)findViewById(R.id.txtMileage);
-                            txtMileage.setText(mileage);
+                            txtMileage.setText(milageConverter.getMilage(mileage));
 
                             TextView txtGas = (TextView)findViewById(R.id.txtGas);
-                            txtGas.setText(gas);
+                            txtGas.setText(gasConverter.getGas(gas));
 
                             TextView txtSpeed = (TextView)findViewById(R.id.txtSpeed);
-                            txtSpeed.setText(speed);
+                            txtSpeed.setText(speedConverter.getSpeed(speed));
 
                             TextView txtRpm = (TextView)findViewById(R.id.txtRpm);
                             txtRpm.setText(rpm);
@@ -233,6 +288,19 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        preferences.registerOnSharedPreferenceChangeListener(preferenceListener);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        preferences.unregisterOnSharedPreferenceChangeListener(preferenceListener);
+    }
 
     @Override
     public void onDestroy() {
@@ -243,7 +311,6 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
 
     public void hideSystemUI() {
         View decorView = getWindow().getDecorView();
@@ -259,6 +326,73 @@ public class MainActivity extends AppCompatActivity {
     private boolean checkPermission() {
         return this.checkPermission(reqPermission, Process.myPid(), Process.myUid()) == PackageManager.PERMISSION_GRANTED;
     }
+
+    private void initUnits(SharedPreferences preferences) {
+        if(preferences.getBoolean("speed_imp", false))
+            speedConverter = new SpeedConverterImperial();
+        else
+            speedConverter = new SpeedConverterMetric();
+
+        if (preferences.getBoolean("milage_imp", false))
+            milageConverter = new MileageConverterImperial();
+        else
+            milageConverter = new MileageConverterMetric();
+
+        if (preferences.getBoolean("gas_imp", false))
+            gasConverter = new GasConverterImperial();
+        else
+            gasConverter = new GasConverterMetric();
+
+        if (preferences.getBoolean("temp_imp", false))
+            temperatureConverter = new TemperatureConverterImperial();
+        else
+            temperatureConverter = new TemperatureConverterMetric();
+
+        if (preferences.getBoolean("clock_imp", false))
+            timeConverter = new TimeConverter12();
+        else
+            timeConverter = new TimeConverter24();
+
+        simpleTimeFormat = new SimpleDateFormat(timeConverter.getTimeFormat());
+
+        TextView txtTemperatureUnit = (TextView)findViewById(R.id.txtTemperatureUnit);
+        txtTemperatureUnit.setText(temperatureConverter.getTemperatureUnit());
+
+        TextView txtMileageUnit = (TextView)findViewById(R.id.txtMilageUnit);
+        txtMileageUnit.setText(milageConverter.getMilageUnit());
+
+        TextView txtGasUnit = (TextView)findViewById(R.id.txtGasUnit);
+        txtGasUnit.setText(gasConverter.getGasUnit());
+
+        TextView txtSpeedUnit = (TextView)findViewById(R.id.txtSpeedUnit);
+        txtSpeedUnit.setText(speedConverter.getSpeedUnit());
+        TextView txtSpeedUnitT = (TextView)findViewById(R.id.txtSpeedUnitT);
+        txtSpeedUnitT.setText(speedConverter.getSpeedUnit());
+        TextView txtSpeedIndi1 = (TextView)findViewById(R.id.IndiSpeed1);
+        txtSpeedIndi1.setText(speedConverter.getIndiSpeed1());
+        TextView txtSpeedIndi2 = (TextView)findViewById(R.id.IndiSpeed2);
+        txtSpeedIndi2.setText(speedConverter.getIndiSpeed2());
+        TextView txtSpeedIndi3 = (TextView)findViewById(R.id.IndiSpeed3);
+        txtSpeedIndi3.setText(speedConverter.getIndiSpeed3());
+        TextView txtSpeedIndi4 = (TextView)findViewById(R.id.IndiSpeed4);
+        txtSpeedIndi4.setText(speedConverter.getIndiSpeed4());
+        TextView txtSpeedIndi5 = (TextView)findViewById(R.id.IndiSpeed5);
+        txtSpeedIndi5.setText(speedConverter.getIndiSpeed5());
+        TextView txtSpeedIndi6 = (TextView)findViewById(R.id.IndiSpeed6);
+        txtSpeedIndi6.setText(speedConverter.getIndiSpeed6());
+        TextView txtSpeedIndi7 = (TextView)findViewById(R.id.IndiSpeed7);
+        txtSpeedIndi7.setText(speedConverter.getIndiSpeed7());
+        TextView txtSpeedIndi8 = (TextView)findViewById(R.id.IndiSpeed8);
+        txtSpeedIndi8.setText(speedConverter.getIndiSpeed8());
+    }
+
+    class SharedPreferenceListener implements SharedPreferences.OnSharedPreferenceChangeListener {
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            initUnits(sharedPreferences);
+        }
+    }
+    SharedPreferenceListener preferenceListener = new SharedPreferenceListener();
 
 
     public void testlog(View view) {
