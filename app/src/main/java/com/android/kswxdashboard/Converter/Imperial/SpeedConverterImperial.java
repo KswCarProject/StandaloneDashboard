@@ -11,7 +11,7 @@ public class SpeedConverterImperial implements SpeedConverter {
     @Override
     public String getSpeed(String speedInKmh) {
 
-        return Integer.toString((int)(Integer.valueOf(speedInKmh) / 1.609));
+        return Integer.toString((int)(Double.valueOf(speedInKmh) / 1.609));
     }
 
     @Override

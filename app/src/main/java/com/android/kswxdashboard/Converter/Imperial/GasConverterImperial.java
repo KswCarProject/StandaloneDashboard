@@ -6,7 +6,7 @@ public class GasConverterImperial implements GasConverter {
     @Override
     public String getGas(String gas) {
 
-        return Integer.toString((int)(Integer.valueOf(gas) / 3.785));
+        return Integer.toString((int)(Double.valueOf(gas) / 3.785));
     }
 
     @Override

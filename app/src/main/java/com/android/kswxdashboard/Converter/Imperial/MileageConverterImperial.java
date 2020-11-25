@@ -6,7 +6,7 @@ public class MileageConverterImperial implements MilageConverter {
     @Override
     public String getMilage(String milage) {
 
-        return Integer.toString((int)(Integer.valueOf(milage) / 1.609));
+        return Integer.toString((int)(Double.valueOf(milage) / 1.609));
     }
 
     @Override

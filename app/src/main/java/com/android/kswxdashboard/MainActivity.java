@@ -5,7 +5,6 @@ import androidx.core.content.ContextCompat;
 
 import android.animation.ObjectAnimator;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -89,6 +88,9 @@ public class MainActivity extends AppCompatActivity {
                             .commit();
                     ObjectAnimator.ofInt(findViewById(R.id.dashboardRoot).getBackground(), "alpha", 50).setDuration(250).start();
                     ObjectAnimator.ofFloat(findViewById(R.id.txtRpm), "alpha", 0.20f).setDuration(250).start();
+                    ObjectAnimator.ofFloat(findViewById(R.id.imgDoor), "alpha", 0.20f).setDuration(250).start();
+                    ObjectAnimator.ofFloat(findViewById(R.id.imgRpmneedle), "alpha", 0.20f).setDuration(250).start();
+                    ObjectAnimator.ofFloat(findViewById(R.id.imgSpeedneedle), "alpha", 0.20f).setDuration(250).start();
                     isShown = true;
                 }
                 else {
@@ -97,6 +99,9 @@ public class MainActivity extends AppCompatActivity {
                             .remove(settingsFragment)
                             .commit();
                     settingsFragment.getView().setBackgroundColor(Color.TRANSPARENT);
+                    ObjectAnimator.ofFloat(findViewById(R.id.imgSpeedneedle), "alpha", 1f).setDuration(250).start();
+                    ObjectAnimator.ofFloat(findViewById(R.id.imgRpmneedle), "alpha", 1f).setDuration(250).start();
+                    ObjectAnimator.ofFloat(findViewById(R.id.imgDoor), "alpha", 1f).setDuration(250).start();
                     ObjectAnimator.ofFloat(findViewById(R.id.txtRpm), "alpha", 1f).setDuration(250).start();
                     ObjectAnimator.ofInt(findViewById(R.id.dashboardRoot).getBackground(), "alpha", 255).setDuration(250).start();
                     isShown= false;
@@ -115,7 +120,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 runOnUiThread(new Runnable() {
-
                     @Override
                     public void run() {
                         c = Calendar.getInstance();

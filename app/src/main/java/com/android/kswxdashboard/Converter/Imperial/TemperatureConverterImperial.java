@@ -6,7 +6,7 @@ public class TemperatureConverterImperial implements TemperatureConverter {
     @Override
     public String getTemperature(String temperature) {
 
-        return Integer.toString((int)(Integer.valueOf(temperature) * 9/5.0) + 32);
+        return Integer.toString((int)(Double.valueOf(temperature) * 9/5.0) + 32);
     }
 
     @Override
