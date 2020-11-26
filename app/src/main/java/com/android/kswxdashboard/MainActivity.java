@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
                 dlgAlert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        //finish();
+                        finish();
                     }
                 });
                 dlgAlert.create().show();
