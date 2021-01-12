@@ -258,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
                                         txtSpeed.setText(speedConverter.getSpeed(Integer.toString(speedvalue)));
 
                                         TextView txtRpm = (TextView) findViewById(R.id.txtRpm);
-                                        txtRpm.setText(rpmvalue);
+                                        txtRpm.setText(rpmvalue.toString());
 
                                         ImageView imgDoor = (ImageView) findViewById(R.id.imgDoor);
                                         try {
@@ -415,7 +415,7 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferenceListener preferenceListener = new SharedPreferenceListener();
 
 
-    public void testlog(View view) {
+    public void testlog() {
         Log.i("IPowerManagerAppService", "sendStatus Msg: {\"jsonArg\":\"{\\\"acData\\\":{\\\"AC_Switch\\\":false,\\\"autoSwitch\\\":false,\\\"backMistSwitch\\\":false,\\\"frontMistSwitch\\\":false,\\\"isOpen\\\":false,\\\"leftTmp\\\":0.0,\\\"loop\\\":0,\\\"mode\\\":0,\\\"rightTmp\\\":0.0,\\\"speed\\\":0.0,\\\"sync\\\":false},\\\"benzData\\\":{\\\"airBagSystem\\\":false,\\\"airMaticStatus\\\":0,\\\"auxiliaryRadar\\\":false,\\\"highChassisSwitch\\\":false,\\\"light1\\\":0,\\\"light2\\\":0,\\\"pressButton\\\":0},\\\"carData\\\":{\\\"airTemperature\\\":22.0,\\\"averSpeed\\\":0.0,\\\"carDoor\\\":192,\\\"distanceUnitType\\\":0,\\\"engineTurnS\\\":7000,\\\"handbrake\\\":false,\\\"mileage\\\":309,\\\"oilSum\\\":27,\\\"oilUnitType\\\":0,\\\"oilWear\\\":0.0,\\\"safetyBelt\\\":true,\\\"speed\\\":150,\\\"temperatureUnitType\\\":0},\\\"mcuVerison\\\":\\\"615065dALS-ID5-X1-GT-190508-B18\\\\u0000\\\\u0000\\\\u0000\\\\u0000\\\\u0000\\\\u0000\\\\u0000\\\\u0000\\\\u0000\\\",\\\"systemMode\\\":1}\",\"type\":5}");
     }
 
