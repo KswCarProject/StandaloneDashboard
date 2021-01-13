@@ -156,131 +156,134 @@ public class MainActivity extends AppCompatActivity {
                                 String line = logEntry;
 
                                 if (line.contains("IPowerManagerAppService")) {
-                                    line = line.split("sendStatus Msg: ")[1];
-                                    WitsStatus witsMessage = WitsStatus.getWitsStatusFormJson(line);
-                                    if (witsMessage.type == 5) {
-                                        McuStatus mcuStatus = McuStatus.getStatusFromJson(witsMessage.jsonArg);
+                                    String[] lines = line.split("sendStatus Msg:");
+                                    if (lines.length > 1) {
+                                        line = lines[1];
+                                        WitsStatus witsMessage = WitsStatus.getWitsStatusFormJson(line);
+                                        if (witsMessage.type == 5) {
+                                            McuStatus mcuStatus = McuStatus.getStatusFromJson(witsMessage.jsonArg);
 
-                                        String temperature = Float.toString(mcuStatus.carData.airTemperature);
-                                        String cardoor = Integer.toString(mcuStatus.carData.carDoor);
-                                        String handbreak = Boolean.toString(mcuStatus.carData.handbrake);
-                                        String mileage = Integer.toString(mcuStatus.carData.mileage);
-                                        String gas = Integer.toString(mcuStatus.carData.oilSum);
-                                        String seatbelt = Boolean.toString(mcuStatus.carData.safetyBelt);
+                                            String temperature = Float.toString(mcuStatus.carData.airTemperature);
+                                            String cardoor = Integer.toString(mcuStatus.carData.carDoor);
+                                            String handbreak = Boolean.toString(mcuStatus.carData.handbrake);
+                                            String mileage = Integer.toString(mcuStatus.carData.mileage);
+                                            String gas = Integer.toString(mcuStatus.carData.oilSum);
+                                            String seatbelt = Boolean.toString(mcuStatus.carData.safetyBelt);
 
-                                        Integer speedvalue = mcuStatus.carData.speed;
-                                        Integer rpmvalue = mcuStatus.carData.engineTurnS;
+                                            Integer speedvalue = mcuStatus.carData.speed;
+                                            Integer rpmvalue = mcuStatus.carData.engineTurnS;
 
-                                        ImageView imgSpeedneedle = (ImageView) findViewById(R.id.imgSpeedneedle);
+                                            ImageView imgSpeedneedle = (ImageView) findViewById(R.id.imgSpeedneedle);
 
-                                        if (speedvalue < 21) {
-                                            imgSpeedneedle.setRotation((float) (speedvalue - 70));
-                                        } else if (speedvalue > 20 & speedvalue < 31) {
-                                            imgSpeedneedle.setRotation((float) ((speedvalue - 20) * 1.5) - 50);
-                                        } else if (speedvalue > 30 & speedvalue < 41) {
-                                            imgSpeedneedle.setRotation((float) ((speedvalue - 20) * 1.5) - 50);
-                                        } else if (speedvalue > 40 & speedvalue < 51) {
-                                            imgSpeedneedle.setRotation((float) ((speedvalue - 40) * 1.2) - 20);
-                                        } else if (speedvalue > 50 & speedvalue < 61) {
-                                            imgSpeedneedle.setRotation((float) ((speedvalue - 50) * 1.1) - 8);
-                                        } else if (speedvalue > 60 & speedvalue < 71) {
-                                            imgSpeedneedle.setRotation((float) ((speedvalue - 60) * 0.7) + 3);
-                                        } else if (speedvalue > 70 & speedvalue < 81) {
-                                            imgSpeedneedle.setRotation((float) ((speedvalue - 70) * 0.8) + 10);
-                                        } else if (speedvalue > 80 & speedvalue < 91) {
-                                            imgSpeedneedle.setRotation((float) ((speedvalue - 80) * 0.7) + 18);
-                                        } else if (speedvalue > 90 & speedvalue < 101) {
-                                            imgSpeedneedle.setRotation((float) ((speedvalue - 90) * 0.5) + 25);
-                                        } else if (speedvalue > 100 & speedvalue < 111) {
-                                            imgSpeedneedle.setRotation((float) ((speedvalue - 100) * 1.0) + 30);
-                                        } else if (speedvalue > 110 & speedvalue < 121) {
-                                            imgSpeedneedle.setRotation((float) ((speedvalue - 110) * 1.0) + 40);
-                                        } else if (speedvalue > 120 & speedvalue < 131) {
-                                            imgSpeedneedle.setRotation((float) ((speedvalue - 120) * 0.7) + 50);
-                                        } else if (speedvalue > 130 & speedvalue < 141) {
-                                            imgSpeedneedle.setRotation((float) ((speedvalue - 130) * 0.8) + 57);
-                                        } else if (speedvalue > 140 & speedvalue < 151) {
-                                            imgSpeedneedle.setRotation((float) ((speedvalue - 140) * 0.8) + 65);
-                                        } else if (speedvalue > 150 & speedvalue < 161) {
-                                            imgSpeedneedle.setRotation((float) ((speedvalue - 150) * 0.7) + 73);
-                                        } else if (speedvalue > 160 & speedvalue < 171) {
-                                            imgSpeedneedle.setRotation((float) ((speedvalue - 160) * 0.8) + 80);
-                                        } else if (speedvalue > 170 & speedvalue < 181) {
-                                            imgSpeedneedle.setRotation((float) ((speedvalue - 170) * 0.5) + 88);
-                                        } else if (speedvalue > 180 & speedvalue < 191) {
-                                            imgSpeedneedle.setRotation((float) ((speedvalue - 180) * 0.3) + 93);
-                                        } else if (speedvalue > 190 & speedvalue < 201) {
-                                            imgSpeedneedle.setRotation((float) ((speedvalue - 190) * 0.4) + 96);
-                                        } else if (speedvalue > 200 & speedvalue < 211) {
-                                            imgSpeedneedle.setRotation((float) ((speedvalue - 200) * 0.5) + 100);
-                                        } else if (speedvalue > 210 & speedvalue < 221) {
-                                            imgSpeedneedle.setRotation((float) ((speedvalue - 210) * 0.5) + 105);
-                                        } else if (speedvalue > 220 & speedvalue < 231) {
-                                            imgSpeedneedle.setRotation((float) ((speedvalue - 220) * 0.5) + 110);
-                                        } else if (speedvalue > 230 & speedvalue < 241) {
-                                            imgSpeedneedle.setRotation((float) ((speedvalue - 230) * 0.5) + 115);
-                                        } else if (speedvalue > 240 & speedvalue < 251) {
-                                            imgSpeedneedle.setRotation((float) ((speedvalue - 240) * 0.5) + 120);
-                                        } else if (speedvalue > 250 & speedvalue < 261) {
-                                            imgSpeedneedle.setRotation((float) ((speedvalue - 250) * 0.5) + 125);
-                                        }
-
-
-                                        ImageView imgRpmneedle = (ImageView) findViewById(R.id.imgRpmneedle);
-
-                                        if (rpmvalue < 1001) {
-                                            imgRpmneedle.setRotation((float) (70 - ((rpmvalue / 1000.0) * 20)));
-                                        } else if (rpmvalue > 1000 & rpmvalue < 2001) {
-                                            imgRpmneedle.setRotation((float) (50 - (((rpmvalue / 1000.0) - 1) * 30)));
-                                        } else if (rpmvalue > 2000 & rpmvalue < 3001) {
-                                            imgRpmneedle.setRotation((float) (20 - (((rpmvalue / 1000.0) - 2) * 23)));
-                                        } else if (rpmvalue > 3000 & rpmvalue < 4001) {
-                                            imgRpmneedle.setRotation((float) (-3 - (((rpmvalue / 1000.0) - 3) * 27)));
-                                        } else if (rpmvalue > 4000 & rpmvalue < 5001) {
-                                            imgRpmneedle.setRotation((float) (-30 - (((rpmvalue / 1000.0) - 4) * 35)));
-                                        } else if (rpmvalue > 5000 & rpmvalue < 6001) {
-                                            imgRpmneedle.setRotation((float) (-60 - (((rpmvalue / 1000.0) - 5) * 35)));
-                                        } else if (rpmvalue > 6000 & rpmvalue < 7001) {
-                                            imgRpmneedle.setRotation((float) (-100 - (((rpmvalue / 1000.0) - 6) * 30)));
-                                        }
+                                            if (speedvalue < 21) {
+                                                imgSpeedneedle.setRotation((float) (speedvalue - 70));
+                                            } else if (speedvalue > 20 & speedvalue < 31) {
+                                                imgSpeedneedle.setRotation((float) ((speedvalue - 20) * 1.5) - 50);
+                                            } else if (speedvalue > 30 & speedvalue < 41) {
+                                                imgSpeedneedle.setRotation((float) ((speedvalue - 20) * 1.5) - 50);
+                                            } else if (speedvalue > 40 & speedvalue < 51) {
+                                                imgSpeedneedle.setRotation((float) ((speedvalue - 40) * 1.2) - 20);
+                                            } else if (speedvalue > 50 & speedvalue < 61) {
+                                                imgSpeedneedle.setRotation((float) ((speedvalue - 50) * 1.1) - 8);
+                                            } else if (speedvalue > 60 & speedvalue < 71) {
+                                                imgSpeedneedle.setRotation((float) ((speedvalue - 60) * 0.7) + 3);
+                                            } else if (speedvalue > 70 & speedvalue < 81) {
+                                                imgSpeedneedle.setRotation((float) ((speedvalue - 70) * 0.8) + 10);
+                                            } else if (speedvalue > 80 & speedvalue < 91) {
+                                                imgSpeedneedle.setRotation((float) ((speedvalue - 80) * 0.7) + 18);
+                                            } else if (speedvalue > 90 & speedvalue < 101) {
+                                                imgSpeedneedle.setRotation((float) ((speedvalue - 90) * 0.5) + 25);
+                                            } else if (speedvalue > 100 & speedvalue < 111) {
+                                                imgSpeedneedle.setRotation((float) ((speedvalue - 100) * 1.0) + 30);
+                                            } else if (speedvalue > 110 & speedvalue < 121) {
+                                                imgSpeedneedle.setRotation((float) ((speedvalue - 110) * 1.0) + 40);
+                                            } else if (speedvalue > 120 & speedvalue < 131) {
+                                                imgSpeedneedle.setRotation((float) ((speedvalue - 120) * 0.7) + 50);
+                                            } else if (speedvalue > 130 & speedvalue < 141) {
+                                                imgSpeedneedle.setRotation((float) ((speedvalue - 130) * 0.8) + 57);
+                                            } else if (speedvalue > 140 & speedvalue < 151) {
+                                                imgSpeedneedle.setRotation((float) ((speedvalue - 140) * 0.8) + 65);
+                                            } else if (speedvalue > 150 & speedvalue < 161) {
+                                                imgSpeedneedle.setRotation((float) ((speedvalue - 150) * 0.7) + 73);
+                                            } else if (speedvalue > 160 & speedvalue < 171) {
+                                                imgSpeedneedle.setRotation((float) ((speedvalue - 160) * 0.8) + 80);
+                                            } else if (speedvalue > 170 & speedvalue < 181) {
+                                                imgSpeedneedle.setRotation((float) ((speedvalue - 170) * 0.5) + 88);
+                                            } else if (speedvalue > 180 & speedvalue < 191) {
+                                                imgSpeedneedle.setRotation((float) ((speedvalue - 180) * 0.3) + 93);
+                                            } else if (speedvalue > 190 & speedvalue < 201) {
+                                                imgSpeedneedle.setRotation((float) ((speedvalue - 190) * 0.4) + 96);
+                                            } else if (speedvalue > 200 & speedvalue < 211) {
+                                                imgSpeedneedle.setRotation((float) ((speedvalue - 200) * 0.5) + 100);
+                                            } else if (speedvalue > 210 & speedvalue < 221) {
+                                                imgSpeedneedle.setRotation((float) ((speedvalue - 210) * 0.5) + 105);
+                                            } else if (speedvalue > 220 & speedvalue < 231) {
+                                                imgSpeedneedle.setRotation((float) ((speedvalue - 220) * 0.5) + 110);
+                                            } else if (speedvalue > 230 & speedvalue < 241) {
+                                                imgSpeedneedle.setRotation((float) ((speedvalue - 230) * 0.5) + 115);
+                                            } else if (speedvalue > 240 & speedvalue < 251) {
+                                                imgSpeedneedle.setRotation((float) ((speedvalue - 240) * 0.5) + 120);
+                                            } else if (speedvalue > 250 & speedvalue < 261) {
+                                                imgSpeedneedle.setRotation((float) ((speedvalue - 250) * 0.5) + 125);
+                                            }
 
 
-                                        TextView txtTemperature = (TextView) findViewById(R.id.txtTemperature);
-                                        txtTemperature.setText(temperatureConverter.getTemperature(temperature));
+                                            ImageView imgRpmneedle = (ImageView) findViewById(R.id.imgRpmneedle);
 
-                                        TextView txtMileage = (TextView) findViewById(R.id.txtMileage);
-                                        txtMileage.setText(milageConverter.getMilage(mileage));
+                                            if (rpmvalue < 1001) {
+                                                imgRpmneedle.setRotation((float) (70 - ((rpmvalue / 1000.0) * 20)));
+                                            } else if (rpmvalue > 1000 & rpmvalue < 2001) {
+                                                imgRpmneedle.setRotation((float) (50 - (((rpmvalue / 1000.0) - 1) * 30)));
+                                            } else if (rpmvalue > 2000 & rpmvalue < 3001) {
+                                                imgRpmneedle.setRotation((float) (20 - (((rpmvalue / 1000.0) - 2) * 23)));
+                                            } else if (rpmvalue > 3000 & rpmvalue < 4001) {
+                                                imgRpmneedle.setRotation((float) (-3 - (((rpmvalue / 1000.0) - 3) * 27)));
+                                            } else if (rpmvalue > 4000 & rpmvalue < 5001) {
+                                                imgRpmneedle.setRotation((float) (-30 - (((rpmvalue / 1000.0) - 4) * 35)));
+                                            } else if (rpmvalue > 5000 & rpmvalue < 6001) {
+                                                imgRpmneedle.setRotation((float) (-60 - (((rpmvalue / 1000.0) - 5) * 35)));
+                                            } else if (rpmvalue > 6000 & rpmvalue < 7001) {
+                                                imgRpmneedle.setRotation((float) (-100 - (((rpmvalue / 1000.0) - 6) * 30)));
+                                            }
 
-                                        TextView txtGas = (TextView) findViewById(R.id.txtGas);
-                                        txtGas.setText(gasConverter.getGas(gas));
 
-                                        TextView txtSpeed = (TextView) findViewById(R.id.txtSpeed);
-                                        txtSpeed.setText(speedConverter.getSpeed(Integer.toString(speedvalue)));
+                                            TextView txtTemperature = (TextView) findViewById(R.id.txtTemperature);
+                                            txtTemperature.setText(temperatureConverter.getTemperature(temperature));
 
-                                        TextView txtRpm = (TextView) findViewById(R.id.txtRpm);
-                                        txtRpm.setText(rpmvalue.toString());
+                                            TextView txtMileage = (TextView) findViewById(R.id.txtMileage);
+                                            txtMileage.setText(milageConverter.getMilage(mileage));
 
-                                        ImageView imgDoor = (ImageView) findViewById(R.id.imgDoor);
-                                        try {
-                                            imgDoor.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.class.getField("door" + cardoor).getInt(null)));
-                                        } catch (IllegalAccessException e) {
-                                            e.printStackTrace();
-                                        } catch (NoSuchFieldException e) {
-                                            e.printStackTrace();
-                                        }
+                                            TextView txtGas = (TextView) findViewById(R.id.txtGas);
+                                            txtGas.setText(gasConverter.getGas(gas));
 
-                                        ImageView imgHandbreak = (ImageView) findViewById(R.id.imgHandbreak);
-                                        if (handbreak.contains("false")) {
-                                            imgHandbreak.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.handbreakoffok));
-                                        } else {
-                                            imgHandbreak.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.handbreakonok));
-                                        }
+                                            TextView txtSpeed = (TextView) findViewById(R.id.txtSpeed);
+                                            txtSpeed.setText(speedConverter.getSpeed(Integer.toString(speedvalue)));
 
-                                        ImageView imgSeatbelt = (ImageView) findViewById(R.id.imgSeatbelt);
-                                        if (seatbelt.contains("false")) {
-                                            imgSeatbelt.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.seatbeltoffok));
-                                        } else {
-                                            imgSeatbelt.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.seatbeltonok));
+                                            TextView txtRpm = (TextView) findViewById(R.id.txtRpm);
+                                            txtRpm.setText(rpmvalue.toString());
+
+                                            ImageView imgDoor = (ImageView) findViewById(R.id.imgDoor);
+                                            try {
+                                                imgDoor.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.class.getField("door" + cardoor).getInt(null)));
+                                            } catch (IllegalAccessException e) {
+                                                e.printStackTrace();
+                                            } catch (NoSuchFieldException e) {
+                                                e.printStackTrace();
+                                            }
+
+                                            ImageView imgHandbreak = (ImageView) findViewById(R.id.imgHandbreak);
+                                            if (handbreak.contains("false")) {
+                                                imgHandbreak.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.handbreakoffok));
+                                            } else {
+                                                imgHandbreak.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.handbreakonok));
+                                            }
+
+                                            ImageView imgSeatbelt = (ImageView) findViewById(R.id.imgSeatbelt);
+                                            if (seatbelt.contains("false")) {
+                                                imgSeatbelt.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.seatbeltoffok));
+                                            } else {
+                                                imgSeatbelt.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.seatbeltonok));
+                                            }
                                         }
                                     }
                                 }
