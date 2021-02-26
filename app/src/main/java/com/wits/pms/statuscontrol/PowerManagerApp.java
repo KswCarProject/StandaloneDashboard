@@ -1,12 +1,8 @@
 package com.wits.pms.statuscontrol;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.database.ContentObserver;
-import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.provider.Settings;
 import android.util.Log;
 import com.google.gson.Gson;
 import com.wits.pms.ICmdListener;
@@ -15,8 +11,6 @@ import com.wits.pms.IPowerManagerAppService;
 import java.util.HashMap;
 
 public class PowerManagerApp {
-    private static ICmdListener cmdListener;
-    private static final HashMap<String, IContentObserver> maps = new HashMap<>();
 
     public static IPowerManagerAppService getManager() {
         return IPowerManagerAppService.Stub.asInterface(getService("wits_pms"));
@@ -24,10 +18,7 @@ public class PowerManagerApp {
 
     public static void registerICmdListener(ICmdListener listener) {
         try {
-            cmdListener = listener;
-            if (getManager() != null) {
-                getManager().registerCmdListener(listener);
-            }
+            getManager().registerCmdListener(listener);
         } catch (RemoteException e) {
         }
     }
@@ -35,24 +26,21 @@ public class PowerManagerApp {
     public static void registerIContentObserver(String key, IContentObserver contentObserver) {
         Log.i("IPowerManagerService", contentObserver.getClass().getName());
         try {
-            maps.put(key, contentObserver);
-            if (getManager() != null) {
-                getManager().registerObserver(key, contentObserver);
-            }
+            getManager().registerObserver(key, contentObserver);
         } catch (RemoteException e) {
         }
     }
 
     public static void unRegisterIContentObserver(IContentObserver contentObserver) {
         try {
-            for (String key : maps.keySet()) {
-                if (maps.get(key) == contentObserver) {
-                    maps.remove(key, contentObserver);
-                }
-            }
-            if (getManager() != null) {
-                getManager().unregisterObserver(contentObserver);
-            }
+            getManager().unregisterObserver(contentObserver);
+        } catch (RemoteException e) {
+        }
+    }
+
+    public static void unRegisterICmdListener(ICmdListener cmdListener) {
+        try {
+            getManager().unregisterCmdListener(cmdListener);
         } catch (RemoteException e) {
         }
     }

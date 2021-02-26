@@ -6,13 +6,9 @@ import androidx.core.content.ContextCompat;
 import android.animation.ObjectAnimator;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.IBinder;
-import android.os.Process;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -47,11 +43,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
-
-    final public String reqPermission = "android.permission.READ_LOGS";
     Calendar c;
     SimpleDateFormat simpleTimeFormat;
-    private LogcatRecorder logcatRecorder;
 
     final SettingsFragment settingsFragment = new SettingsFragment();
     Context mContext;
@@ -62,73 +55,37 @@ public class MainActivity extends AppCompatActivity {
     TemperatureConverter temperatureConverter;
     TimeConverter timeConverter;
 
+    private ICmdListener cmdListener = new ICmdListener.Stub() {
+        @Override
+        public boolean handleCommand(String str) {
+            return false;
+        }
+
+        @Override
+        public void updateStatusInfo(String str) {
+            if (!str.isEmpty()) {
+                WitsStatus status = WitsStatus.getWitsStatusFormJson(str);
+                if (status.type == 5) {
+                    updateUI(status.jsonArg);
+                }
+            }
+        }
+    };
+
+    private IContentObserver contentObserver = new IContentObserver.Stub() {
+        @Override
+        public void onChange() throws RemoteException {
+            updateUI(PowerManagerApp.getStatusString("mcuJson"));
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
         setContentView(R.layout.activity_main);
 
-        Log.d("Snaggly", "Testing PowerManagerApp IPC");
         try {
-            Log.d("Snaggly", PowerManagerApp.getStatusString("mcuJson"));
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-
-        PowerManagerApp.registerICmdListener(new ICmdListener.Stub() {
-            @Override
-            public boolean handleCommand(String str) {
-                return false;
-            }
-
-            @Override
-            public void updateStatusInfo(String str) {
-                if (!str.isEmpty()) {
-                    WitsStatus status = WitsStatus.getWitsStatusFormJson(str);
-                    if (status.type == 5) {
-                        updateUI(status.jsonArg);
-                    }
-                }
-            }
-
-            @Override
-            public IBinder asBinder() {
-                return null;
-            }
-        });
-
-        PowerManagerApp.registerIContentObserver("mcuJson", new IContentObserver.Stub() {
-            @Override
-            public void onChange() throws RemoteException {
-                updateUI(WitsStatus.getWitsStatusFormJson(PowerManagerApp.getStatusString("mcuJson")).jsonArg);
-            }
-
-            @Override
-            public IBinder asBinder() {
-                return null;
-            }
-        });
-
-        try {
-            if (!checkPermission()){
-                try {
-                    PmAdbManager.tryGrantingPermissionOverAdb(getFilesDir(), reqPermission);
-                } catch (Exception e) {
-                    AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
-                    dlgAlert.setMessage("Failed to get permissions!" + e.getClass().getName() + " \n " + e.getMessage() + "\n You will have to manually grant READ_LOGS permission to this app!");
-                    dlgAlert.setTitle("Dashboard");
-                    dlgAlert.setPositiveButton("OK", null);
-                    dlgAlert.setCancelable(true);
-                    dlgAlert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            finish();
-                        }
-                    });
-                    dlgAlert.create().show();
-                }
-            }
-
             findViewById(R.id.dashboardRoot).setOnClickListener(new View.OnClickListener() {
                 boolean isShown = false;
                 @Override
@@ -189,48 +146,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             }, 0, 1000);
 
-            //Initialize the LogcatRecorder
-            /*
-            logcatRecorder = new LogcatRecorder(new OnLogcatRecorderListener() {
-
-                @Override
-                public void onNewLogEntry(final String logEntry) {
-
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                String line = logEntry;
-
-                                if (line.contains("IPowerManagerAppService")) {
-                                    String[] lines = line.split("sendStatus Msg:");
-                                    if (lines.length > 1) {
-                                        line = lines[1];
-                                        WitsStatus witsMessage = WitsStatus.getWitsStatusFormJson(line);
-                                        if (witsMessage.type == 5) {
-                                            updateUI(witsMessage.jsonArg);
-                                        }
-                                    }
-                                }
-                            }
-                            catch (Exception e) {
-                                new AlertDialog.Builder(mContext).setTitle("Oh uh").setMessage(e.toString() + "\n\n\n" + e.getMessage() + "\n\n\n" + e.getCause() + "\n\n\n" + e.getStackTrace()).show();
-                            }
-                        }
-                    });
-                }
-
-            });
-            */
-
-            try {
-                //logcatRecorder.start();
-            } catch (Exception e) {
-                new AlertDialog.Builder(mContext).setTitle("Oh uh").setMessage(e.toString() + "\n\n\n" + e.getMessage() + "\n\n\n" + e.getCause() + "\n\n\n" + e.getStackTrace()).show();
-            }
+            PowerManagerApp.registerICmdListener(cmdListener);
+            PowerManagerApp.registerIContentObserver("mcuJson", contentObserver);
         }
         catch (Exception e) {
-            new AlertDialog.Builder(mContext).setTitle("Oh uh").setMessage(e.toString() + "\n\n\n" + e.getMessage() + "\n\n\n" + e.getCause() + "\n\n\n" + e.getStackTrace()).show();
+            new AlertDialog.Builder(mContext).setTitle("Oh uh").setMessage("This App was designed only for Snapdragon 625 Android HUs!\n\n" + e.toString() + "\n\n\n" + e.getMessage() + "\n\n\n" + e.getCause() + "\n\n\n" + e.getStackTrace()).show();
         }
 
 
@@ -253,11 +173,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        try {
-            logcatRecorder.stop();
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        }
+        PowerManagerApp.unRegisterIContentObserver(contentObserver);
+        PowerManagerApp.unRegisterICmdListener(cmdListener);
     }
 
     public void hideSystemUI() {
@@ -269,10 +186,6 @@ public class MainActivity extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-    }
-
-    private boolean checkPermission() {
-        return this.checkPermission(reqPermission, Process.myPid(), Process.myUid()) == PackageManager.PERMISSION_GRANTED;
     }
 
     private void initUnits(SharedPreferences preferences) {
