@@ -3,15 +3,18 @@ package com.android.kswxdashboard;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -83,6 +86,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (!checkPermissions()) {
+            finish();
+        }
+
         mContext = this;
         setContentView(R.layout.activity_main);
 
@@ -155,7 +162,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-
         preferences.registerOnSharedPreferenceChangeListener(preferenceListener);
         try {
             PowerManagerApp.registerICmdListener(cmdListener);
@@ -178,6 +184,29 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             new AlertDialog.Builder(mContext).setTitle("Oh uh").setMessage("This App was designed only for Snapdragon 625 Android HUs!\n\n" + e.toString() + "\n\n\n" + e.getMessage() + "\n\n\n" + e.getCause() + "\n\n\n" + e.getStackTrace()).show();
         }
+    }
+
+    private boolean checkPermissions() {
+        if (checkSelfPermission(Manifest.permission.INTERNET) == PackageManager.PERMISSION_DENIED) {
+            requestPermissions(new String[] {Manifest.permission.INTERNET}, 0);
+            return false;
+        }
+        if (Settings.Global.getInt(getContentResolver(), "hidden_api_policy", 0) != 1) {
+            try {
+                AdbManager.sendCommand("settings put global hidden_api_policy 1", this);
+                return false;
+            } catch (Exception e) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        checkPermissions();
     }
 
     public void hideSystemUI() {
