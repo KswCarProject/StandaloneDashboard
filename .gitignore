@@ -1,6 +1,6 @@
 *.iml
 .gradle
-/.idea/*
+/.idea
 /local.properties
 /.idea/caches
 /.idea/libraries
@@ -13,5 +13,7 @@
 /captures
 .externalNativeBuild
 .cxx
-/app/debug/*
-/app/release/*
+/app/debug
+/app/release
+.idea/gradle.xml
+.idea/runConfigurations.xml
